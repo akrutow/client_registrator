@@ -22,6 +22,7 @@ def login_page():
 
             login_input = ui.input('Login').classes('w-full')
             pass_input = ui.input('Password', password=True, password_toggle_button=True).classes('w-full')
+            remember_user_checkbox = ui.checkbox('Запомнить меня')
             error_label = ui.label('').classes('text-red-500 text-sm')
 
             async def do_login():
