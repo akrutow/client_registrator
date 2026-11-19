@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String, Boolean, Numeric
+from sqlalchemy import ForeignKey, Integer, String, Boolean, Numeric
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 from decimal import Decimal
 
@@ -15,3 +15,6 @@ class Client(Base):
     phone_number: Mapped[str | None] = mapped_column(String, nullable=True)
     link: Mapped[str | None] = mapped_column(String, nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
+
+    user: Mapped['User'] = relationship('User', back_populates='clients')
