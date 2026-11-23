@@ -1,13 +1,16 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 import uvicorn
 from dotenv import load_dotenv
 import os
 
+from backend.app.routers import users
+
 
 app = FastAPI()
 load_dotenv()
+
+app.include_router(users.router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -17,21 +20,19 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-class LoginRequest(BaseModel):
-    login: str
-    password: str
+@app.get('/')
+async def root():
+    '''Корневой маршрут, подтверждающий, что API работает.'''
+    return {'message': 'Добро пожаловать в API'}
 
 
-class LoginResponse(BaseModel):
-    ok: bool
-    error: str | None = None
-    token: str | None = None
-
-@app.post('/login', response_model=LoginResponse)
-def login(data: LoginRequest):
-    if data.login == 'admin' and data.password == 'admin':
-        return LoginResponse(ok=True, token='fake-jwt-token-12345')
-    return LoginResponse(ok=False, error='Неверный логин или пароль')
+# @app.post('/login', response_model=LoginResponse)
+# def login(data: LoginRequest):
+#     if data.login == 'admin' and data.password == 'admin':
+#         return LoginResponse(ok=True, token='fake-jwt-token-12345')
+#     return LoginResponse(ok=False, error='Неверный логин или пароль')
+# тут пришел запрос с фронта с введенным логином и паролем. 
+# далее идет логика и ответ на фронт
 
 
 if __name__ == '__main__':

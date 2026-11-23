@@ -1,7 +1,14 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import DeclarativeBase
+from dotenv import load_dotenv
+import os
 
-DATABASE_URL = 'postgresql+asyncpg://registrator_user:cjcjr@localhost:5432/registrator_db'
+
+load_dotenv()
+secret = os.getenv('SECRET')
+host = os.getenv('API_HOST', '127.0.0.1')
+
+DATABASE_URL = f'postgresql+asyncpg://registrator_user:{secret}@{host}:5432/registrator_db'
 
 async_engine = create_async_engine(DATABASE_URL)
 
