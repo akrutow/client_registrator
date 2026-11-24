@@ -4,7 +4,7 @@ from sqlalchemy import select
 
 from backend.app.models.users import User as UserModel
 from backend.app.schemas.users import UserCreate, User as UserSchema
-from backend.app.db_depends import get_async_db
+from backend.app.database import get_session
 from backend.app.auth import hash_password
 
 
@@ -12,7 +12,7 @@ router = APIRouter(prefix='/users', tags=['users'])
 
 
 @router.post('/', response_model=UserSchema, status_code=status.HTTP_201_CREATED)
-async def create_user(user: UserCreate, db: AsyncSession = Depends(get_async_db)):
+async def create_user(user: UserCreate, db: AsyncSession = Depends(get_session)):
     '''Регистрирует нового пользователя.'''
     result = await db.scalars(select(UserModel).where(UserModel.email == user.email))
     if result.first():
