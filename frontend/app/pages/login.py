@@ -6,7 +6,7 @@ import os
 
 
 load_dotenv()
-API_URL = f'http://{os.getenv('API_HOST')}:{os.getenv('API_PORT')}'
+API_URL = f'http://{os.getenv('API_HOST')}:{os.getenv('API_PORT')}/api'
 STORAGE_SECRET = os.getenv('STORAGE_SECRET')
 
 
@@ -33,7 +33,7 @@ def login_page():
 
                 async with httpx.AsyncClient() as client:
                     response = await client.post(
-                        f'{API_URL}/login',
+                        f'{API_URL}/users',
                         json={'login': login_input.value, 'password': pass_input.value}
                     )
                     data = response.json()

@@ -5,12 +5,13 @@ from dotenv import load_dotenv
 import os
 
 from backend.app.routers import users
+from backend.app import models
 
 
 app = FastAPI()
 load_dotenv()
 
-app.include_router(users.router)
+app.include_router(users.router, prefix='/api')
 
 app.add_middleware(
     CORSMiddleware,
